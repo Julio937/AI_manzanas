@@ -19,18 +19,18 @@ df = pd.DataFrame(columns=nombres_caracteristicas)
 # Función para calcular características de una imagen
 def calcular_caracteristicas(imagen):
     # Redimensionar la imagen a un tamaño manejable
-    imagen = cv2.resize(imagen, (1000, 750))  # Ajusta el tamaño según tus necesidades
+    imagen = cv2.resize(imagen, (1000, 750))  
     
     # Calcular el promedio de intensidad en cada canal de color
     color_promedio = np.mean(imagen, axis=(0, 1))  # Color promedio
     
-    # Ejemplo de cálculo de textura 
+    # Cálculo de textura 
     textura = np.var(imagen)
     
-    # Ejemplo de cálculo de forma 
+    # Cálculo de forma 
     forma = imagen.shape[0] / imagen.shape[1]  # Relación de aspecto
     
-    # Ejemplo de cálculo de bordes 
+    # Cálculo de bordes 
     imagen_gris = cv2.cvtColor(imagen, cv2.COLOR_BGR2GRAY)
     bordes = cv2.Canny(imagen_gris, 100, 200)
     
