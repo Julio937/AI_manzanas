@@ -4,10 +4,10 @@ import pandas as pd
 import os
 
 # Definir la ubicación de tus imágenes de manzanas y pepinos
-directorio_raiz = "D:/Universidad/IUE/IA/Modelo/manzanas_ai"
+directorio_raiz = "D:/Universidad/IUE/IA/AI_manzanas/Modelo/manzanas_ai"
 
 # Lista de nombres de características
-nombres_caracteristicas = ["Color_Rojo", "Color_Verde", "Color_Azul", "Textura", "Forma", "Bordes", "Etiqueta"]
+nombres_caracteristicas = ["Color_Rojo", "Color_Verde", "Color_Azul", "Textura", "Forma", "Bordes", "Promedio_Grises", "Contornos", "Etiqueta"]
 
 # Inicializar listas para características y etiquetas
 caracteristicas = []
@@ -34,8 +34,15 @@ def calcular_caracteristicas(imagen):
     imagen_gris = cv2.cvtColor(imagen, cv2.COLOR_BGR2GRAY)
     bordes = cv2.Canny(imagen_gris, 100, 200)
     
+    # Cálculo del promedio de intensidad en escala de grises
+    promedio_grises = np.mean(imagen_gris)
+    
+    # Cálculo de contornos
+    contornos, _ = cv2.findContours(bordes, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+    numero_contornos = len(contornos)
+    
     # Concatenar todas las características en un vector
-    caracteristicas_vector = np.concatenate([color_promedio, [textura, forma, bordes.mean()]])
+    caracteristicas_vector = np.concatenate([color_promedio, [textura, forma, bordes.mean(), promedio_grises, numero_contornos]])
     
     return caracteristicas_vector
 
@@ -57,4 +64,9 @@ for etiqueta in ["manzanas", "pepinos"]:
 
 # Mostrar el DataFrame con las características separadas
 print(df)
+
+
+# Mostrar la cantidad de etiquetas de cada tipo
+print("Cantidad de fotos de cada tipo:")
+print(df["Etiqueta"].value_counts())
 
